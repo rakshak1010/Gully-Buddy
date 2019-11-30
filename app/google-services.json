@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "997772998408",
+    "firebase_url": "https://gullybuddy-8a5bf.firebaseio.com",
+    "project_id": "gullybuddy-8a5bf",
+    "storage_bucket": "gullybuddy-8a5bf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997772998408:android:d65a1233ab500954d9debd",
+        "android_client_info": {
+          "package_name": "com.example.vmac.Watbot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997772998408-3mmbdu4uga0cc92i9fi8qeufvi3j6u1o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-IAQfX7M5dNz1kt7H91Oa8As-URQwh34"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997772998408-3mmbdu4uga0cc92i9fi8qeufvi3j6u1o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
