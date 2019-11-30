@@ -26,6 +26,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+
 import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneHelper;
 import com.ibm.watson.developer_cloud.android.library.audio.MicrophoneInputStream;
 import com.ibm.watson.developer_cloud.android.library.audio.StreamPlayer;
@@ -59,9 +64,7 @@ import static com.twilio.example.Example.ACCOUNT_SID;
 import static com.twilio.example.Example.AUTH_TOKEN;
 
 
-public class MainActivity extends AppCompatActivity {
-
-
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
 
   private RecyclerView recyclerView;
@@ -85,6 +88,11 @@ public class MainActivity extends AppCompatActivity {
   private SessionResponse watsonAssistantSession;
   private SpeechToText speechService;
   private TextToSpeech textToSpeech;
+
+    private SensorManager sensorManager;
+    private Sensor accelerometer;
+    private double rootSquare;
+    private boolean flag = true;
 
   private void createServices() {
     watsonAssistant = new Assistant("2018-11-08", new IamOptions.Builder()
@@ -115,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     //TODO:
-
 
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
@@ -151,6 +158,15 @@ public class MainActivity extends AppCompatActivity {
       makeRequest();
     } else {
       Log.i(TAG, "Permission to record was already granted");
+    }
+
+
+    sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+    if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+      // success! we have an accelerometer
+
+      accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+      sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
 
@@ -305,50 +321,7 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(message.getSid());
                 */
 
-
-              try {
-                File f = new File("/data/data/" + getPackageName() + "/" + "text1.txt");
-                FileInputStream is = new FileInputStream(f);
-                int size = is.available();
-                byte[] buffer = new byte[size];
-                is.read(buffer);
-                is.close();
-                String phoneNumber = new String(buffer);
-                String[] arr=phoneNumber.split(" ");
-                Log.d("rishi" , arr[0]);
-                  Log.d("rishi" , arr[1]);
-                  Log.d("rishi" , arr[2]);
-
-
-
-
-                //Log.d("rishi","this is"+phoneNumber);
-                //Location currentLocation=new Location("");
-                SmsManager smsManager1 = SmsManager.getDefault();
-                String uri="http://maps.google.com//?q=28.4592881"+','+"77.0721857";
-                StringBuffer smsBody = new StringBuffer();
-                //smsBody.append("http://maps.google.com?q=28.4592881,77.0721857");
-                // smsBody.append(currentLocation.getLatitude());
-                //smsBody.append(",");
-                // smsBody.append(currentLocation.getLongitude());
-                smsBody.append(Uri.parse(uri));
-                //smsManager1.sendTextMessage("+91"+ phoneNumber, null, smsBody.toString(), null, null);
-
-
-                String dial = "tel:" + "+91" + phoneNumber ;
-                startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
-
-
-                SmsManager smsManager = SmsManager.getDefault();
-
-
-                smsManager.sendTextMessage("+91" + phoneNumber, null, arr[1]+"!!\nThis is "+arr[2]+" here.\nI am at risk! Please Help me. I am at  "+smsBody, null, null);
-
-              } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-              }
-
+              sendSMS();
             }
           }
         } catch (Exception e) {
@@ -359,6 +332,74 @@ public class MainActivity extends AppCompatActivity {
 
     thread.start();
 
+  }
+
+  private void sendSMS(){
+    try {
+      File f = new File("/data/data/" + getPackageName() + "/" + "text1.txt");
+      FileInputStream is = new FileInputStream(f);
+      int size = is.available();
+      byte[] buffer = new byte[size];
+      is.read(buffer);
+      is.close();
+      String phoneNumber = new String(buffer);
+      String[] arr=phoneNumber.split(" ");
+      Log.d("rishi" , arr[0]);
+      Log.d("rishi" , arr[1]);
+      Log.d("rishi" , arr[2]);
+
+
+
+
+      //Log.d("rishi","this is"+phoneNumber);
+      //Location currentLocation=new Location("");
+      SmsManager smsManager1 = SmsManager.getDefault();
+      String uri="http://maps.google.com//?q=28.4592881"+','+"77.0721857";
+      StringBuffer smsBody = new StringBuffer();
+      //smsBody.append("http://maps.google.com?q=28.4592881,77.0721857");
+      // smsBody.append(currentLocation.getLatitude());
+      //smsBody.append(",");
+      // smsBody.append(currentLocation.getLongitude());
+      smsBody.append(Uri.parse(uri));
+      //smsManager1.sendTextMessage("+91"+ phoneNumber, null, smsBody.toString(), null, null);
+
+
+      String dial = "tel:" + "+91" + phoneNumber ;
+      startActivity(new Intent(Intent.ACTION_DIAL, Uri.parse(dial)));
+
+
+      SmsManager smsManager = SmsManager.getDefault();
+
+
+      smsManager.sendTextMessage("+91" + phoneNumber, null, arr[1]+"!!\nThis is "+arr[2]+" here.\nI am at risk! Please Help me. I am at  "+smsBody, null, null);
+
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
+
+  @Override
+  public void onSensorChanged(SensorEvent sensorEvent) {
+      Sensor mySensor = sensorEvent.sensor;
+
+      if (mySensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+          rootSquare=Math.sqrt(Math.pow(sensorEvent.values[0],2)+Math.pow(sensorEvent.values[1],2)+Math.pow(sensorEvent.values[2],2));
+          if(rootSquare<2.0)
+          {
+              Toast.makeText(this, "Fall detected", Toast.LENGTH_SHORT).show();
+              if(flag){
+                  flag = false;
+                  sendSMS();
+              }
+
+          }
+      }
+  }
+
+  @Override
+  public void onAccuracyChanged(Sensor sensor, int i) {
   }
 
   private class SayTask extends AsyncTask<String, Void, String> {
