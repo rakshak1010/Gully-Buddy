@@ -354,7 +354,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
       //Log.d("rishi","this is"+phoneNumber);
       //Location currentLocation=new Location("");
       SmsManager smsManager1 = SmsManager.getDefault();
-      String uri="http://maps.google.com//?q=28.4592881"+','+"77.0721857";
+      String uri="http://maps.google.com//?q=23.2672493"+','+"77.3680164";
       StringBuffer smsBody = new StringBuffer();
       //smsBody.append("http://maps.google.com?q=28.4592881,77.0721857");
       // smsBody.append(currentLocation.getLatitude());

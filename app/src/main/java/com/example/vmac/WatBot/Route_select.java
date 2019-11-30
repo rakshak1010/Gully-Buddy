@@ -42,11 +42,11 @@ public class Route_select extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
 
         mapAPI = googleMap;
-        LatLng current = new LatLng(28.4583876,77.0716413);
+        LatLng current = new LatLng(23.2672493,77.3680164);
 
         mapAPI.addMarker(new MarkerOptions().position(current));
 
-        mapAPI.moveCamera(CameraUpdateFactory.newLatLngZoom(current,15.5f));
+        mapAPI.moveCamera(CameraUpdateFactory.newLatLngZoom(current,17f));
 //        mapAPI.setMapType(mapAPI.MAP_TYPE_SATELLITE);
 
     }
