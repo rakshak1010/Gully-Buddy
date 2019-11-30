@@ -56,7 +56,8 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.1'
 //    implementation 'com.google.android.gms:play-services-maps:16.0.0'
     // implementation 'com.google.android.gms:play-services-location:16.0.0'
-
+//added by siddharth
+    implementation 'com.google.firebase:firebase-auth:9.2.1'
     implementation 'com.google.android.gms:play-services-location:10.0.1'
     implementation fileTree(dir: 'C:\\Users\\rhnsaxena\\Documents\\GitHub\\Startenity\\276_uzumymw\\GullyBuddy\\libs', include: ['*.aar', '*.jar'], exclude: [])
     implementation fileTree(dir: 'C:\\Users\\Rakshak\\Documents\\GitHub\\276_uzumymw\\GullyBuddy\\libs', include: ['*.aar', '*.jar'], exclude: [])

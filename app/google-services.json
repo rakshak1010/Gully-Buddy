@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "997772998408-1ha0pi74oj1q68glgqhrpfbcu4hpcjac.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vmac.Watbot",
+            "certificate_hash": "ae0095f0b7a5e50aae539eeeee33bda8e5fed33d"
+          }
+        },
+        {
           "client_id": "997772998408-3mmbdu4uga0cc92i9fi8qeufvi3j6u1o.apps.googleusercontent.com",
           "client_type": 3
         }
