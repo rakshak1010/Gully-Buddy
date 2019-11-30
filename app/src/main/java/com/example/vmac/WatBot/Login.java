@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
 import java.lang.*;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -124,7 +126,12 @@ public class Login extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-        updateUI(currentUser);
+        updateUIAfterLogin(currentUser);
+    }
+
+    public boolean isFilePresent(String fileName) {
+        File file = new File("/data/data/" + getApplicationContext().getPackageName() + "/" + fileName);
+        return file.exists();
     }
 
     private void updateUI(FirebaseUser currentUser) {
@@ -141,6 +148,40 @@ public class Login extends AppCompatActivity {
                 file.flush();
                 file.close();
             } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.d("rishi" , "obj "+ obj);
+
+            //currentContext.startActivity(activityChangeIntent);
+
+            Login.this.startActivity(activityChangeIntent);
+        }else{
+            Toast.makeText(Login.this,"Try Again",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void updateUIAfterLogin(FirebaseUser currentUser) {
+        if(currentUser!=null){
+            final Intent activityChangeIntent = new Intent(Login.this, Assistant_select.class);
+            JSONObject obj = new JSONObject();
+
+            try {
+                File f = new File("/data/data/" + getPackageName() + "/" + "text1.txt");
+                FileInputStream is = new FileInputStream(f);
+                int size = is.available();
+                byte[] buffer = new byte[size];
+                is.read(buffer);
+                is.close();
+                String phoneNumber = new String(buffer);
+                String[] arr = phoneNumber.split(" ");
+                Log.d("rishi", arr[0]);
+                Log.d("rishi", arr[1]);
+                Log.d("rishi", arr[2]);
+                friendNumber = arr[0];
+                friendName  = arr[1];
+                sname = arr[2];
+            }catch (Exception e){
                 e.printStackTrace();
             }
 
@@ -174,4 +215,5 @@ public class Login extends AppCompatActivity {
                 });
 
     }
+
 }
